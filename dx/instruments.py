@@ -18,6 +18,22 @@ class Stock(FinancialInstrument):
         self.vol = vol
 
 
+class VanillaOption(FinancialInstrument):
+
+    def __init__(self, name, underlying, strike, expiry, pc, day_count=365):
+        super().__init__(name, day_count)
+        self.underlying = underlying
+        self.strike = strike
+        self.expiry = expiry
+        self.type = pc
+
+    def payoff(self, S):
+        if self.type == "call":
+            return np.maximum(S - self.strike, 0)
+        elif self.type == "put":
+            return np.maximum(self.strike - S, 0)
+
+
 class ConstantShortRate(FinancialInstrument):
 
     def __init__(self, name, rate, day_count=365):
